@@ -17,7 +17,11 @@ Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
 
-Auth::routes();
+Route::get('/login',function(\Illuminate\Http\Request $request){
+    return $request->all();
+});
+
+//Auth::routes();
 
 Route::get('/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
