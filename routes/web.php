@@ -17,11 +17,11 @@ Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
 
-Route::get('/login',function(\Illuminate\Http\Request $request){
+Route::post('/hi',function(\Illuminate\Http\Request $request){
     return $request->all();
 });
 
-//Auth::routes();
+Auth::routes();
 
 Route::get('/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');

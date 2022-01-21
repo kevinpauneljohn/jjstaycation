@@ -33,8 +33,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        return $request->all();
-//        return redirect(route('dashboard'));
+        return redirect(route('dashboard'));
     }
 
     /**
