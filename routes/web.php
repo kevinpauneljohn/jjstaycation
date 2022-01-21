@@ -17,10 +17,6 @@ Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
 
-Route::post('/hi',function(\Illuminate\Http\Request $request){
-    return $request->all();
-});
-
 Auth::routes();
 
 Route::get('/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
