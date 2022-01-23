@@ -6,7 +6,7 @@
     <div class="col-lg-4">
         <div class="form-group days">
             <label for="days">Days</label><span class="required">*</span>
-            <input name="days" type="number" class="form-control" id="days">
+            <input name="days" type="number" class="form-control" id="days" min="0">
         </div>
     </div>
     <div class="col-lg-4">

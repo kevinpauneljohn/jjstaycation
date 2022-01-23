@@ -276,6 +276,7 @@
         function displayCalendar(event)
         {
             let dateNow = moment(new Date()).format('YYYY-MM-DD');
+            let bookingForm = $('.form-submit');
             calendar = new FullCalendar.Calendar(calendarEl,
                 {
                     initialView: "dayGridMonth",
@@ -304,6 +305,8 @@
                         if(!isMobile())
                         {
                             let selectedDate = info.startStr;
+                            bookingForm.find('.text-danger').remove();
+                            bookingForm.find('#package, #status, #occasion').val('').change();
 
                             if(moment(selectedDate).isBefore(dateNow))
                             {

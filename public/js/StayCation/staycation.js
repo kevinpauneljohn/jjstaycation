@@ -14,7 +14,7 @@ $(document).on('click','.add-staycation-btn',function(){
     formSubmit.find('#region, #province, #city, #barangay').val('').trigger('change');
     formSubmit.find('input, select, textarea').attr('disabled',false);
     popUp.find('.form-submit').removeAttr('id').attr('id','add-staycation-form');
-    popUp.find('.modal-title').text('Add Staycation');
+    popUp.find('.modal-title').text('Add Resort');
 });
 $(document).on('submit','#add-staycation-form',function(f){
     f.preventDefault();
@@ -56,7 +56,7 @@ $(document).on('click','.edit-staycation-btn',function(){
     stayCationId = this.id;
     $('.text-danger').remove();
     popUp.find('.form-submit').removeAttr('id').attr('id','edit-staycation-form');
-    popUp.find('.modal-title').text('Edit Staycation');
+    popUp.find('.modal-title').text('Edit Resort');
     popUp.modal('toggle');
     $.ajax({
         'url' : '/staycation-stored-info/'+stayCationId,

@@ -60,7 +60,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <ul class="nav nav-tabs">
-                            <li class="nav-item"><a class="nav-link active" href="#staycations" data-toggle="tab">Staycations</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="#staycations" data-toggle="tab">Resorts</a></li>
                             <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                         </ul>
@@ -113,7 +113,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Add New Staycation</h4>
+                            <h4 class="modal-title">Add New Resort</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
