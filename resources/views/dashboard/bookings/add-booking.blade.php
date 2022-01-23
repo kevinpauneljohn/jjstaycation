@@ -64,6 +64,7 @@
 @section('plugins.Select2', true)
 @section('plugins.FullCalendar', true)
 @section('plugins.Stepper', true)
+@section('plugins.DeviceDetector', true)
 @section('css')
 
 @stop
@@ -98,7 +99,6 @@
             showConfirmButton: false,
             timer: 3000
         });
-
 
 
         // BS-Stepper Init
@@ -190,17 +190,19 @@
             }
         });
 
-        function confirmSelectedDate(info)
+        function confirmSelectedDate(start, end)
         {
-            dateStart = moment(info.startStr);
-            dateEnd = new Date(info.endStr);
+            dateStart = moment(start);
+            dateEnd = new Date(end);
             dateEnd.setDate( dateEnd.getDate() - 1 );
-            // console.log(info.startStr);
-
             dateEnd = moment(dateEnd);
+
+            let preferred_date = isMobile() ? "Preferred Date Start" : 'Preferred Date?';
+            let text = isMobile() ? dateStart.format('MMMM DD, YYYY') : dateStart.format('MMMM DD, YYYY')+' to '+dateEnd.format('MMMM DD, YYYY');
+
             Swal.fire({
-                title: 'Preferred Date?',
-                text: dateStart.format('MMMM DD, YYYY')+' to '+dateEnd.format('MMMM DD, YYYY'),
+                title: preferred_date,
+                text: text,
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -271,9 +273,9 @@
 
         blockedDates();
 
-
         function displayCalendar(event)
         {
+            let dateNow = moment(new Date()).format('YYYY-MM-DD');
             calendar = new FullCalendar.Calendar(calendarEl,
                 {
                     initialView: "dayGridMonth",
@@ -299,17 +301,20 @@
                         }
                     },
                     select: function(info){
-                        let dateNow = moment(new Date()).format('YYYY-MM-DD');
-                        let selectedDate = info.startStr;
-
-                        if(moment(selectedDate).isBefore(dateNow))
+                        if(!isMobile())
                         {
-                            Toast.fire({
-                                type: 'warning',
-                                title: 'Please select another date'
-                            });
-                        }else{
-                            confirmSelectedDate(info);
+                            let selectedDate = info.startStr;
+
+                            if(moment(selectedDate).isBefore(dateNow))
+                            {
+                                Toast.fire({
+                                    type: 'warning',
+                                    title: 'Please select another date'
+                                });
+                            }else{
+                                // confirmSelectedDate(info);
+                                confirmSelectedDate(info.startStr, info.endStr);
+                            }
                         }
                     },
                     eventClick: function(info) {
@@ -319,7 +324,19 @@
                         console.log(info)
                     },
                     dateClick: function(info) {
-                                       // alert('clicked ' + info.dateStr);
+                        if(isMobile())
+                        {
+                            if(moment(moment(info.dateStr)).isBefore(dateNow))
+                            {
+                                Toast.fire({
+                                    type: 'warning',
+                                    title: 'Please select another date'
+                                });
+                            }else{
+                                let end = moment(info.dateStr).add('d',1);
+                                confirmSelectedDate(moment(info.dateStr), new Date(end));
+                            }
+                        }
                     },
                     events: event
                 },

@@ -145,14 +145,14 @@ return [
     |
     */
 
-    'sidebar_mini' => 'xs',
+    'sidebar_mini' => true,
     'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => true,
-    'sidebar_collapse_remember_no_transition' => false,
+    'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'l',
-    'sidebar_nav_accordion' => true,
+    'sidebar_nav_accordion' => false,
     'sidebar_nav_animation_speed' => 300,
 
     /*
@@ -517,6 +517,16 @@ return [
                     'asset' => false,
                     'location' => '/vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css',
                 ],
+            ],
+        ],
+        'DeviceDetector' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/js/deviceDetector.js',
+                ]
             ],
         ],
     ],
