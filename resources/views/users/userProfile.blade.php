@@ -73,7 +73,7 @@
                                             <strong><i class="fas fa-birthday-cake mr-1"></i> Date of Birth</strong>
 
                                             <p class="text-muted">
-                                                {{$user->date_of_birth->format('M d, Y')}}
+                                                {{$user->date_of_birth !== null ? $user->date_of_birth->format('M d, Y') : ""}}
                                             </p>
                                             <hr>
                                             <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
