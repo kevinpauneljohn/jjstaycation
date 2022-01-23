@@ -48,7 +48,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group email">
                                         <label for="email">Email</label>
-                                        <input type="email" name="email" class="form-control" id="email">
+                                        <input type="text" name="email" class="form-control" id="email">
                                     </div>
                                 </div>
 
@@ -82,7 +82,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                                             </div>
-                                            <input name="preferred_date" type="text" class="form-control float-right" id="preferred_date">
+                                            <input name="preferred_date" type="text" class="form-control float-right" id="preferred_date" readonly="readonly">
                                         </div>
                                         <!-- /.input group -->
                                     </div>
@@ -113,7 +113,7 @@
                                 <div class="col-lg-4">
                                     <div class="form-group total_amount">
                                         <label for="total_amount">Total Amount</label><span class="required">*</span>
-                                        <input type="text" name="total_amount" class="form-control" id="total_amount">
+                                        <input type="text" name="total_amount" class="form-control" id="total_amount" inputmode="numeric">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">

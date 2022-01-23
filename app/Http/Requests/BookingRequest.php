@@ -30,7 +30,7 @@ class BookingRequest extends FormRequest
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'nullable|email',
-            'mobile_number' => 'required',
+            'mobile_number' => 'required|regex:/^[+]?[\d]+([\-][\d]+)*\d$/',
             'facebook_url' => 'nullable|url',
             'preferred_date' => 'required',
             'package' => 'required',

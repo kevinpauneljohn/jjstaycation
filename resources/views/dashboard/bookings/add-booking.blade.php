@@ -374,16 +374,16 @@
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',false);
                     $('#add-booking-form').find('.add-booking-btn').attr('disabled',false).val('Save');
                 },error: function(xhr, status, error){
-                    // console.log(xhr);
+                    console.log(xhr);
                     let items = xhr.responseJSON.errors;
 
-                    if(items.hasOwnProperty('firstname')
-                        || items.hasOwnProperty('lastname')
-                        || items.hasOwnProperty('mobile_number'))
-                        Toast.fire({
-                            type: 'warning',
-                            title: 'Customer details are required!'
-                        });
+                    // if(items.hasOwnProperty('firstname')
+                    //     || items.hasOwnProperty('lastname')
+                    //     || items.hasOwnProperty('mobile_number'))
+                    //     Toast.fire({
+                    //         type: 'warning',
+                    //         title: 'Customer details are required!'
+                    //     });
                     // console.log();
 
                 if(xhr.responseJSON.success === false && xhr.responseJSON.date === false)
