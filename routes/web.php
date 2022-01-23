@@ -82,3 +82,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/barangays/{city}',[\App\Http\Controllers\AddressController::class,'getBarangays'])->name('get.barangays');
 });
 
+Route::get('/test',function(){
+    phpinfo();
+});
+
