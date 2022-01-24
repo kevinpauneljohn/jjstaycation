@@ -56,61 +56,8 @@
         </div>
         <!--end add new staycation modal-->
 
-        <div class="modal fade" id="booking-details-modal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Booking Details</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                            <strong><i class="fas fa-box-open"></i> Package Name</strong>
-
-                            <p class="text-muted" id="package"></p>
-                            <hr>
-                            <strong><i class="far fa-calendar-alt"></i> Date</strong>
-
-                            <p class="text-muted" id="date"></p>
-
-                            <hr>
-                            <strong><i class="fas fa-user-tie"></i> Guest</strong>
-
-                            <p class="text-muted" id="guest"></p>
-
-                            <hr>
-                            <strong><i class="fas fa-users"></i> Pax</strong>
-
-                            <p class="text-muted" id="pax"></p>
-
-                            <hr>
-                            <strong><i class="fas fa-money-bill-wave"></i> Total Amount</strong>
-
-                            <p class="text-muted" id="amount"></p>
-
-                            <hr>
-
-                            <strong><i class="fas fa-user-plus"></i> Booked By</strong>
-
-                            <p class="text-muted" id="booked_by"></p>
-
-                            <hr>
-                            <strong><i class="fas fa-calendar-day"></i> Date Booked</strong>
-
-                            <p class="text-muted" id="date_booked"></p>
-
-                            <hr>
-
-                            <strong><i class="far fa-file-alt mr-1"></i> Remarks</strong>
-
-                            <p class="text-muted" id="remarks">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                    </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
+        <!-- booking details modal -->
+        <x-booking-details-modal></x-booking-details-modal>
     @endif
 @stop
 @section('plugins.Moment', true)
@@ -383,7 +330,7 @@
                     },
                     eventClick: function(info) {
                         // alert('Event: ' + info.event.title);
-                        // change the border color just for fun
+                        bookingDetailsModal.modal('toggle');
                         let bookings = bookingDetails(info.event.id);
                         bookingDetailsModal.find('#package').text(bookings.title);
                         bookingDetailsModal.find('#date').text(moment(bookings.start).format('MMMM-DD-YYYY hh:mm a')+' to '+moment(bookings.end).format('MMMM-DD-YYYY hh:mm a'));
@@ -394,9 +341,8 @@
                         bookingDetailsModal.find('#booked_by').text(bookings.user.username);
                         bookingDetailsModal.find('#date_booked').text(moment(bookings.created_at).format('MMMM-DD-YYYY hh:mm a'));
                         // console.log(bookings);
-
+                        // change the border color just for fun
                         info.el.style.borderColor = 'red';
-                        bookingDetailsModal.modal('toggle');
                     },
                     dateClick: function(info) {
                         stepper.reset();
