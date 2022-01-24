@@ -331,16 +331,7 @@
                     eventClick: function(info) {
                         // alert('Event: ' + info.event.title);
                         bookingDetailsModal.modal('toggle');
-                        let bookings = bookingDetails(info.event.id);
-                        bookingDetailsModal.find('#package').text(bookings.title);
-                        bookingDetailsModal.find('#date').text(moment(bookings.start).format('MMMM-DD-YYYY hh:mm a')+' to '+moment(bookings.end).format('MMMM-DD-YYYY hh:mm a'));
-                        bookingDetailsModal.find('#guest').text(bookings.customer.firstname+' '+bookings.customer.lastname);
-                        bookingDetailsModal.find('#pax').text(bookings.pax);
-                        bookingDetailsModal.find('#amount').text(parseFloat(bookings.total_amount).toLocaleString());
-                        bookingDetailsModal.find('#remarks').text(bookings.remarks);
-                        bookingDetailsModal.find('#booked_by').text(bookings.user.username);
-                        bookingDetailsModal.find('#date_booked').text(moment(bookings.created_at).format('MMMM-DD-YYYY hh:mm a'));
-                        // console.log(bookings);
+                        bookingDetails(info.event.id, bookingDetailsModal);
                         // change the border color just for fun
                         info.el.style.borderColor = 'red';
                     },
