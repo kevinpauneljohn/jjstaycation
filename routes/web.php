@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth']], function (){
 
     //bookings//
     Route::resource('bookings',\App\Http\Controllers\Staycation\BookingsController::class);
+    Route::get('/booking-details/{booking}',[\App\Http\Controllers\Staycation\BookingsController::class,'getBookings'])->name('bookings.details');
     Route::get('/blocked-dates/{staycation}',[\App\Http\Controllers\Staycation\BookingsController::class,'blockedDates'])->name('bookings.blocked.dates');
     //end bookings//
 

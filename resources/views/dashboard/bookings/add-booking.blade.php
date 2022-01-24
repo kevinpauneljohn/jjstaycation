@@ -55,6 +55,62 @@
                 <!-- /.modal-dialog -->
         </div>
         <!--end add new staycation modal-->
+
+        <div class="modal fade" id="booking-details-modal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Booking Details</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                            <strong><i class="fas fa-box-open"></i> Package Name</strong>
+
+                            <p class="text-muted" id="package"></p>
+                            <hr>
+                            <strong><i class="far fa-calendar-alt"></i> Date</strong>
+
+                            <p class="text-muted" id="date"></p>
+
+                            <hr>
+                            <strong><i class="fas fa-user-tie"></i> Guest</strong>
+
+                            <p class="text-muted" id="guest"></p>
+
+                            <hr>
+                            <strong><i class="fas fa-users"></i> Pax</strong>
+
+                            <p class="text-muted" id="pax"></p>
+
+                            <hr>
+                            <strong><i class="fas fa-money-bill-wave"></i> Total Amount</strong>
+
+                            <p class="text-muted" id="amount"></p>
+
+                            <hr>
+
+                            <strong><i class="fas fa-user-plus"></i> Booked By</strong>
+
+                            <p class="text-muted" id="booked_by"></p>
+
+                            <hr>
+                            <strong><i class="fas fa-calendar-day"></i> Date Booked</strong>
+
+                            <p class="text-muted" id="date_booked"></p>
+
+                            <hr>
+
+                            <strong><i class="far fa-file-alt mr-1"></i> Remarks</strong>
+
+                            <p class="text-muted" id="remarks">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     @endif
 @stop
 @section('plugins.Moment', true)
@@ -73,6 +129,7 @@
     <script src="{{asset('/js/number-formatter.js')}}"></script>
     <script src="{{asset('/js/errorDisplay.js')}}"></script>
     <script src="{{asset('/js/errorChecker.js')}}"></script>
+    <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
 {{--    {!! $calendar->script() !!}--}}
     <script>
         let calendar;
@@ -102,9 +159,11 @@
 
 
         // BS-Stepper Init
-        document.addEventListener('DOMContentLoaded', function () {
-            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-        });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+        // });
+
+        let stepper = new Stepper($('.bs-stepper')[0])
 
         $('#package').select2({
             allowClear: true,
@@ -275,6 +334,7 @@
 
         function displayCalendar(event)
         {
+            let bookingDetailsModal = $('#booking-details-modal');
             let dateNow = moment(new Date()).format('YYYY-MM-DD');
             let bookingForm = $('.form-submit');
             calendar = new FullCalendar.Calendar(calendarEl,
@@ -296,6 +356,7 @@
                             id: "create-booking-btn",
                             text: "Create",
                             click: function() {
+                                stepper.reset();
                                 customBookingButton();
                                 bookingModal.modal("toggle");
                             }
@@ -321,12 +382,24 @@
                         }
                     },
                     eventClick: function(info) {
-                        alert('Event: ' + info.event.title);
+                        // alert('Event: ' + info.event.title);
                         // change the border color just for fun
+                        let bookings = bookingDetails(info.event.id);
+                        bookingDetailsModal.find('#package').text(bookings.title);
+                        bookingDetailsModal.find('#date').text(moment(bookings.start).format('MMMM-DD-YYYY hh:mm a')+' to '+moment(bookings.end).format('MMMM-DD-YYYY hh:mm a'));
+                        bookingDetailsModal.find('#guest').text(bookings.customer.firstname+' '+bookings.customer.lastname);
+                        bookingDetailsModal.find('#pax').text(bookings.pax);
+                        bookingDetailsModal.find('#amount').text(parseFloat(bookings.total_amount).toLocaleString());
+                        bookingDetailsModal.find('#remarks').text(bookings.remarks);
+                        bookingDetailsModal.find('#booked_by').text(bookings.user.username);
+                        bookingDetailsModal.find('#date_booked').text(moment(bookings.created_at).format('MMMM-DD-YYYY hh:mm a'));
+                        // console.log(bookings);
+
                         info.el.style.borderColor = 'red';
-                        console.log(info)
+                        bookingDetailsModal.modal('toggle');
                     },
                     dateClick: function(info) {
+                        stepper.reset();
                         if(isMobile())
                         {
                             if(moment(moment(info.dateStr)).isBefore(dateNow))
@@ -336,7 +409,7 @@
                                     title: 'Please select another date'
                                 });
                             }else{
-                                let end = moment(info.dateStr).add('d',1);
+                                let end = moment(info.dateStr).add(1,'d');
                                 confirmSelectedDate(moment(info.dateStr), new Date(end));
                             }
                         }
@@ -370,6 +443,7 @@
                         // window.location.reload();
                         displayCalendar(events);
                         bookingModal.modal('toggle');
+                        stepper.reset();
                     }
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',false);
                     $('#add-booking-form').find('.add-booking-btn').attr('disabled',false).val('Save');

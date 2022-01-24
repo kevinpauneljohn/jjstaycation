@@ -186,4 +186,8 @@ class BookingsController extends Controller
         return $booking->blockedDates($id);
     }
 
+    public function getBookings(\App\Services\Bookings\Booking $booking, $bookingsId)
+    {
+        return $booking->getBookingsWithUser($bookingsId);
+    }
 }

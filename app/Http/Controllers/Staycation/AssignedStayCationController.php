@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staycation;
 use Acaronlex\LaravelCalendar\Calendar;
 use App\Http\Controllers\Controller;
 use App\Models\Staycation\Booking;
+use App\Models\Staycation\Staycation;
 use App\Services\Occasion;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -54,11 +55,12 @@ class AssignedStayCationController extends Controller
      */
     public function show(Occasion $occasion, $id)
     {
-        $assignedStaycation = auth()->user()->stayCationLists->where('id',$id)->first();
+        $assignedStaycation = auth()->user()->hasRole('super admin') ? Staycation::where('id',$id)->first() : auth()->user()->stayCationLists->where('id',$id)->first();
 //        $status = ['pencil book','on-going','extended','completed','cancelled'];
         $status = ['pencil book','reserved'];
         $occasion = $occasion->occasion();
         return view('dashboard.bookings.add-booking',compact('assignedStaycation','status','occasion'));
+//        return $assignedStaycation;
     }
 
     /**

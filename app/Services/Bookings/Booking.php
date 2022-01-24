@@ -17,6 +17,16 @@ class Booking
     }
 
     /**
+     * get booking details
+     * @param $bookingsId
+     * @return mixed
+     */
+    public function getBookingsWithUser($bookingsId)
+    {
+        return \App\Models\Staycation\Booking::with(['user','customer'])->where('id',$bookingsId)->first();
+    }
+
+    /**
      * @param $id
      * @return mixed
      */
