@@ -13,8 +13,8 @@
 
                 </div>
                 <div class="btn-group" style="width: 100%">
-                    <button type="button" class="btn btn-primary btn-flat"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger btn-flat"><i class="far fa-trash-alt"></i></button>
+                    <button type="button" class="btn btn-primary btn-flat edit-booking"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger btn-flat remove-booking"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
             <!-- /.modal-content -->

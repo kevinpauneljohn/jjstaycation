@@ -15,6 +15,7 @@ class BookingsController extends Controller
     public function __construct()
     {
         $this->middleware(['permission:view booking','only_assigned_resorts'])->only(['show','blockedDates']);
+        $this->middleware(['permission:delete booking','only_assigned_resorts'])->only(['destroy']);
     }
 
     /**
@@ -170,11 +171,12 @@ class BookingsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        if(Booking::destroy($id))
+            return response()->json(['success' => true, 'message' => 'Booking was successfully removed!']);
     }
 
     /**
@@ -186,6 +188,11 @@ class BookingsController extends Controller
         return $booking->blockedDates($id);
     }
 
+    /**
+     * @param \App\Services\Bookings\Booking $booking
+     * @param $bookingsId
+     * @return mixed
+     */
     public function getBookings(\App\Services\Bookings\Booking $booking, $bookingsId)
     {
         return $booking->getBookingsWithUser($bookingsId);

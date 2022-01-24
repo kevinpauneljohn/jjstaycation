@@ -13,7 +13,6 @@ function bookingDetails(bookingsId, element)
         },success: function(response){
             element.find('.modal-body').html(content(response));
             element.find('.overlay').remove();
-            console.log(response);
         },error: function(xhr, status, error){
             console.log(xhr)
         }

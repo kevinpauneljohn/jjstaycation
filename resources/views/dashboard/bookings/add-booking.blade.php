@@ -76,6 +76,7 @@
     <script src="{{asset('/js/number-formatter.js')}}"></script>
     <script src="{{asset('/js/errorDisplay.js')}}"></script>
     <script src="{{asset('/js/errorChecker.js')}}"></script>
+{{--    <script src="{{asset('/js/bookings/removeBooking.js')}}"></script>--}}
     <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
 {{--    {!! $calendar->script() !!}--}}
     <script>
@@ -279,9 +280,10 @@
 
         blockedDates();
 
+        let bookingDetailsModal = $('#booking-details-modal');
         function displayCalendar(event)
         {
-            let bookingDetailsModal = $('#booking-details-modal');
+
             let dateNow = moment(new Date()).format('YYYY-MM-DD');
             let bookingForm = $('.form-submit');
             calendar = new FullCalendar.Calendar(calendarEl,
@@ -330,8 +332,12 @@
                     },
                     eventClick: function(info) {
                         // alert('Event: ' + info.event.title);
+                        bookingId = info.event.id;
                         bookingDetailsModal.modal('toggle');
                         bookingDetails(info.event.id, bookingDetailsModal);
+
+                        bookingDetailsModal.find('.remove-booking').attr('id',info.event.id);
+                        bookingDetailsModal.find('.edit-booking').attr('id',info.event.id);
                         // change the border color just for fun
                         info.el.style.borderColor = 'red';
                     },
@@ -410,6 +416,55 @@
             });
             clear_errors('firstname','lastname','email','mobile_number','facebook_url','preferred_date','package','total_amount','status','pax');
         });
+
+
+        let bookingId;
+        function removeBooking()
+        {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            }).then((result) => {
+                if (result.value === true) {
+                    $.ajax({
+                        url : '/bookings/'+bookingId,
+                        type: 'DELETE',
+                        headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        beforeSend: function(){
+
+                        },success: function(response){
+                            console.log(response);
+                            displayCalendar(events);
+                            bookingDetailsModal.modal('toggle');
+
+                            if(response.success === true)
+                            {
+                                Toast.fire({
+                                    type: 'success',
+                                    title: response.message
+                                });
+                            }
+                        },error: function(xhr, status, error){
+                            console.log(xhr);
+                        }
+                    });
+                }
+            })
+        }
+
+        $(document).on('click','.remove-booking',function(){
+            removeBooking();
+        });
+
+        $(document).on('click','.edit-booking',function(){
+            console.log(bookingId);
+        });
+
     </script>
 {{--    <script src="{{asset('/js/StayCation/booking.js')}}"></script>--}}
 @stop

@@ -29,7 +29,7 @@
                             <div class="row">
                                 <idv class="col-lg-12">
                                     <div class="form-group preferred_date">
-                                        <label>Preferred Date</label>
+                                        <label>Preferred Date</label><span class="required">*</span>
 
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group occasion">
-                                        <label for="occasion">Occasion</label>
+                                        <label for="occasion">Occasion</label> <i class="text-muted">(optional)</i>
                                         <select class="form-control" name="occasion" id="occasion" style="width: 100%;">
                                             <option value=""></option>
                                             @foreach($occasion as $value)
@@ -94,7 +94,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 remarks">
-                                    <label>Remarks</label>
+                                    <label>Remarks</label> <i class="text-muted">(optional)</i>
                                     <textarea class="form-control" name="remarks" id="remarks"></textarea>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group middlename">
-                                        <label for="middlename">Middle Name</label>
+                                        <label for="middlename">Middle Name</label> <i class="text-muted">(optional)</i>
                                         <input type="text" name="middlename" class="form-control" id="middlename">
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group email">
-                                        <label for="email">Email</label>
+                                        <label for="email">Email</label> <i class="text-muted">(optional)</i>
                                         <input type="text" name="email" class="form-control" id="email">
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group facebook_url">
-                                        <label for="facebook_url">Facebook URL</label>
+                                        <label for="facebook_url">Facebook URL</label> <i class="text-muted">(optional)</i>
                                         <input type="text" name="facebook_url" class="form-control" id="facebook_url">
                                     </div>
                                 </div>
