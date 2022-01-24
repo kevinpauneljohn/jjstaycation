@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\View\Components\Booking\AddBooking;
-use App\View\Components\booking\BookingDetails;
+use App\View\Components\Booking\BookingDetails;
 use App\View\Components\packages\package;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;

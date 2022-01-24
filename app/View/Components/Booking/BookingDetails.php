@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\booking;
+namespace App\View\Components\Booking;
 
 use Illuminate\View\Component;
 
