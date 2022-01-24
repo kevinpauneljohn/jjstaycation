@@ -377,14 +377,13 @@
                     console.log(xhr);
                     let items = xhr.responseJSON.errors;
 
-                    // if(items.hasOwnProperty('firstname')
-                    //     || items.hasOwnProperty('lastname')
-                    //     || items.hasOwnProperty('mobile_number'))
-                    //     Toast.fire({
-                    //         type: 'warning',
-                    //         title: 'Customer details are required!'
-                    //     });
-                    // console.log();
+                    if(Object.keys(items).length > 0)
+                    {
+                        Toast.fire({
+                            type: 'warning',
+                            title: 'Please fill up required fields!'
+                        });
+                    }
 
                 if(xhr.responseJSON.success === false && xhr.responseJSON.date === false)
                     {
