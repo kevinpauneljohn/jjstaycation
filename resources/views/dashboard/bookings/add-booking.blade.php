@@ -61,7 +61,6 @@
     @endif
 @stop
 @section('plugins.Moment', true)
-@section('plugins.Datatables', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominus', true)
 @section('plugins.Select2', true)
@@ -76,9 +75,7 @@
     <script src="{{asset('/js/number-formatter.js')}}"></script>
     <script src="{{asset('/js/errorDisplay.js')}}"></script>
     <script src="{{asset('/js/errorChecker.js')}}"></script>
-{{--    <script src="{{asset('/js/bookings/removeBooking.js')}}"></script>--}}
     <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
-{{--    {!! $calendar->script() !!}--}}
     <script>
         let calendar;
         let blocked_dates;
@@ -419,45 +416,52 @@
 
 
         let bookingId;
-        function removeBooking()
+        async function removeBooking()
         {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                type: 'warning',
+            const { value: reason } = await Swal.fire({
+                input: 'textarea',
+                title: 'Reason',
+                inputPlaceholder: 'Type your message here...',
+                inputAttributes: {
+                    'aria-label': 'Type your message here'
+                },
+                confirmButtonText: 'Submit',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, remove it!'
-            }).then((result) => {
-                if (result.value === true) {
-                    $.ajax({
-                        url : '/bookings/'+bookingId,
-                        type: 'DELETE',
-                        headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        beforeSend: function(){
-
-                        },success: function(response){
-                            console.log(response);
-                            displayCalendar(events);
-                            bookingDetailsModal.modal('toggle');
-
-                            if(response.success === true)
-                            {
-                                Toast.fire({
-                                    type: 'success',
-                                    title: response.message
-                                });
-                            }
-                        },error: function(xhr, status, error){
-                            console.log(xhr);
-                        }
-                    });
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Reason is required!'
+                    }
                 }
-            })
+            });
+
+            if(reason){
+                $.ajax({
+                    url : '/bookings/'+bookingId,
+                    type: 'DELETE',
+                    data: {'reason' : reason},
+                    headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    beforeSend: function(){
+
+                    },success: function(response){
+                        // console.log(response);
+                        displayCalendar(events);
+                        bookingDetailsModal.modal('toggle');
+
+                        if(response.success === true)
+                        {
+                            Toast.fire({
+                                type: 'success',
+                                title: response.message
+                            });
+                        }
+                    },error: function(xhr, status, error){
+                        console.log(xhr);
+                    }
+                });
+            }
         }
 
-        $(document).on('click','.remove-booking',function(){
+        $(document).on('click','.cancel-booking',function(){
             removeBooking();
         });
 

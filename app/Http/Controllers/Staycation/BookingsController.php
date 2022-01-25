@@ -173,10 +173,17 @@ class BookingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if(Booking::destroy($id))
-            return response()->json(['success' => true, 'message' => 'Booking was successfully removed!']);
+        $bookings = Booking::find($id);
+        if($bookings->delete()) {
+            activity()
+                ->causedBy(auth()->user()->id)
+                ->performedOn($bookings)
+                ->withProperties($request->all())
+                ->log('cancelled');
+        }
+            return response()->json(['success' => true, 'message' => 'Booking was cancelled!', 'user' => auth()->user()->id]);
     }
 
     /**
