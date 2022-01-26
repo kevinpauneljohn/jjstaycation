@@ -14,7 +14,7 @@ class AssignedStayCationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:add booking')->only(['show']);
+        $this->middleware(['permission:add booking','only_assigned_resorts'])->only(['show']);
     }
     /**
      * Display a listing of the resource.

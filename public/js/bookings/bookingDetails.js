@@ -11,6 +11,13 @@ function bookingDetails(bookingsId, element)
                 '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
                 '            </div>');
         },success: function(response){
+            let dateNow = moment(new Date()).format('YYYY-MM-DD');
+            // moment(response.start)
+            if(moment(response.start).isBefore(dateNow) && response.status === 'completed'){
+                element.find('.cancel-booking, .edit-booking').hide();
+            }else{
+                element.find('.cancel-booking, .edit-booking').show();
+            }
             element.find('.modal-body').html(content(response));
             element.find('.overlay').remove();
         },error: function(xhr, status, error){

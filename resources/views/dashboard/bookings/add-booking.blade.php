@@ -305,7 +305,6 @@
                     firstDay: 0,
                     displayEventTime: true,
                     selectable: true,
-                    longPressDelay: 1,
                     selectConstraint:{
                         start: '00:00',
                         end: '24:00'
@@ -351,19 +350,6 @@
                     },
                     dateClick: function(info) {
                         stepper.reset();
-                        // if(isMobile())
-                        // {
-                        //     if(moment(moment(info.dateStr)).isBefore(dateNow))
-                        //     {
-                        //         Toast.fire({
-                        //             type: 'warning',
-                        //             title: 'Please select another date'
-                        //         });
-                        //     }else{
-                        //         let end = moment(info.dateStr).add(1,'d');
-                        //         confirmSelectedDate(moment(info.dateStr), new Date(end));
-                        //     }
-                        // }
                     },
                     events: event
                 },
@@ -473,7 +459,7 @@
                 inputAttributes: {
                     'aria-label': 'Type your message here'
                 },
-                confirmButtonText: 'Submit',
+                confirmButtonText: 'Proceed',
                 showCancelButton: true,
                 inputValidator: (value) => {
                     if (!value) {
