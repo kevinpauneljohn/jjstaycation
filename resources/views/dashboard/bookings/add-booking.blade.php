@@ -108,7 +108,15 @@
         //     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
         // });
 
-        let stepper = new Stepper($('.bs-stepper')[0])
+        let stepper = new Stepper($('.bs-stepper')[0],{
+            linear: false,
+            animation: false,
+            selectors: {
+                steps: '.step',
+                trigger: '.step-trigger',
+                stepper: '.bs-stepper'
+            }
+        })
 
         $('#package').select2({
             allowClear: true,
@@ -202,7 +210,7 @@
             dateEnd = moment(dateEnd);
 
             let preferred_date = isMobile() ? "Preferred Date Start" : 'Preferred Date?';
-            let text = isMobile() ? dateStart.format('MMMM DD, YYYY') : dateStart.format('MMMM DD, YYYY')+' to '+dateEnd.format('MMMM DD, YYYY');
+            let text =  dateStart.format('MMMM DD, YYYY')+' to '+dateEnd.format('MMMM DD, YYYY');
 
             Swal.fire({
                 title: preferred_date,
@@ -297,6 +305,11 @@
                     firstDay: 0,
                     displayEventTime: true,
                     selectable: true,
+                    longPressDelay: 1,
+                    selectConstraint:{
+                        start: '00:00',
+                        end: '24:00'
+                    },
                     customButtons: {
                         myCustomButton: {
                             id: "create-booking-btn",
@@ -309,28 +322,26 @@
                         }
                     },
                     select: function(info){
-                        if(!isMobile())
-                        {
-                            let selectedDate = info.startStr;
-                            bookingForm.find('.text-danger').remove();
-                            bookingForm.find('#package, #status, #occasion').val('').change();
+                        stepper.reset();
+                        let selectedDate = info.startStr;
+                        bookingForm.find('.text-danger').remove();
+                        bookingForm.find('#package, #status, #occasion').val('').change();
 
-                            if(moment(selectedDate).isBefore(dateNow))
-                            {
-                                Toast.fire({
-                                    type: 'warning',
-                                    title: 'Please select another date'
-                                });
-                            }else{
-                                // confirmSelectedDate(info);
-                                confirmSelectedDate(info.startStr, info.endStr);
-                            }
+                        if(moment(selectedDate).isBefore(dateNow))
+                        {
+                            Toast.fire({
+                                type: 'warning',
+                                title: 'Please select another date'
+                            });
+                        }else{
+                            confirmSelectedDate(info.startStr, info.endStr);
                         }
                     },
                     eventClick: function(info) {
+                        bookingDetailsModal.modal('toggle');
                         // alert('Event: ' + info.event.title);
                         bookingId = info.event.id;
-                        bookingDetailsModal.modal('toggle');
+
                         bookingDetails(info.event.id, bookingDetailsModal);
 
                         bookingDetailsModal.find('.remove-booking').attr('id',info.event.id);
@@ -340,25 +351,62 @@
                     },
                     dateClick: function(info) {
                         stepper.reset();
-                        if(isMobile())
-                        {
-                            if(moment(moment(info.dateStr)).isBefore(dateNow))
-                            {
-                                Toast.fire({
-                                    type: 'warning',
-                                    title: 'Please select another date'
-                                });
-                            }else{
-                                let end = moment(info.dateStr).add(1,'d');
-                                confirmSelectedDate(moment(info.dateStr), new Date(end));
-                            }
-                        }
+                        // if(isMobile())
+                        // {
+                        //     if(moment(moment(info.dateStr)).isBefore(dateNow))
+                        //     {
+                        //         Toast.fire({
+                        //             type: 'warning',
+                        //             title: 'Please select another date'
+                        //         });
+                        //     }else{
+                        //         let end = moment(info.dateStr).add(1,'d');
+                        //         confirmSelectedDate(moment(info.dateStr), new Date(end));
+                        //     }
+                        // }
                     },
                     events: event
                 },
             );
             calendar.render();
         }
+
+        $(document).on('change','#add-booking-form #preferred_date',function(){
+            $.ajax({
+                url: '/bookings/availability',
+                type: 'POST',
+                headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                data: {
+                    'preferred_date' : this.value,
+                    'staycation_id' : {{$assignedStaycation->id}}
+                },
+                beforeSend: function(){
+                    $('#booking-modal').find('.modal-content').prepend('<div class="overlay">\n' +
+                        '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
+                        '            </div>');
+                },success: function(response){
+                    if(response.success === true)
+                    {
+                        Toast.fire({
+                            type: 'success',
+                            title: response.message
+                        });
+                    }
+                    $('#booking-modal').find('.overlay').remove();
+                },error: function(xhr, status, error){
+                    errorDisplay(xhr.responseJSON.errors);
+                    if(xhr.responseJSON.success === false && xhr.responseJSON.date === false)
+                    {
+                        Toast.fire({
+                            type: 'warning',
+                            title: xhr.responseJSON.message
+                        });
+                    }
+                    $('#booking-modal').find('.overlay').remove();
+                }
+            });
+            clear_errors('preferred_date')
+        });
         $(document).on('submit','#add-booking-form',function(f){
             f.preventDefault();
             let data = $(this).serializeArray();
@@ -443,7 +491,7 @@
                     beforeSend: function(){
 
                     },success: function(response){
-                        // console.log(response);
+                        console.log(response);
                         displayCalendar(events);
                         bookingDetailsModal.modal('toggle');
 

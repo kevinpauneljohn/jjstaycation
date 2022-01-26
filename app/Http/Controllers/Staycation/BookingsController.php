@@ -15,7 +15,7 @@ class BookingsController extends Controller
     public function __construct()
     {
         $this->middleware(['permission:view booking','only_assigned_resorts'])->only(['show','blockedDates']);
-        $this->middleware(['permission:delete booking','only_assigned_resorts'])->only(['destroy']);
+        $this->middleware(['permission:delete booking'])->only(['destroy']);
     }
 
     /**
@@ -184,6 +184,25 @@ class BookingsController extends Controller
                 ->log('cancelled');
         }
             return response()->json(['success' => true, 'message' => 'Booking was cancelled!', 'user' => auth()->user()->id]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function checkAvailability(Request $request, \App\Services\Bookings\Booking $booking)
+    {
+        $date = explode("-",$request->preferred_date);
+        $start_date = Carbon::parse($date[0]);
+        $end_date = Carbon::parse($date[1]);
+        if(collect($booking->overlapping($request->staycation_id, $start_date, $end_date))->count() > 0)
+        {
+            return response()->json(['success' => false,'date' => false, 'message' => 'Selected date overlaps from an existing bookings <br/>Please select another date',
+                'errors' => ['preferred_date' => ['Date overlaps from another bookings']],
+            ],422);
+
+        }
+        return response()->json(['success' => true, 'message' => 'Selected date is available!']);
     }
 
     /**

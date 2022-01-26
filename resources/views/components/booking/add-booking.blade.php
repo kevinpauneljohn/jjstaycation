@@ -6,14 +6,14 @@
                 <div class="bs-stepper-header" role="tablist">
                     <!-- steps here -->
                     <div class="step" data-target="#booking-details">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" onclick="stepper.to(1)">
                             <span class="bs-stepper-circle">1</span>
                             <span class="bs-stepper-label">Booking Details</span>
                         </button>
                     </div>
                     <div class="line"></div>
                     <div class="step" data-target="#customer-info">
-                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" onclick="stepper.to(2)">
                             <span class="bs-stepper-circle">2</span>
                             <span class="bs-stepper-label">Customer Information</span>
                         </button>

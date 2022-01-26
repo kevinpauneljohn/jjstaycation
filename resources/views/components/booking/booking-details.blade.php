@@ -14,7 +14,8 @@
                 </div>
                 <div class="btn-group" style="width: 100%">
                     <button type="button" class="btn btn-primary btn-flat edit-booking">Edit</button>
-                    <button type="button" class="btn btn-danger btn-flat cancel-booking">Cancel</button>
+                    <button type="button" class="btn btn-danger btn-flat cancel-booking">Cancel Booking</button>
+                    <button type="button" class="btn btn-warning btn-flat" data-dismiss="modal">Close</button>
                 </div>
             </div>
             <!-- /.modal-content -->
