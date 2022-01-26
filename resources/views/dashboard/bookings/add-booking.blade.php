@@ -286,6 +286,7 @@
         blockedDates();
 
         let bookingDetailsModal = $('#booking-details-modal');
+        let bookingInformation;
         function displayCalendar(event)
         {
 
@@ -341,12 +342,13 @@
                         // alert('Event: ' + info.event.title);
                         bookingId = info.event.id;
 
-                        bookingDetails(info.event.id, bookingDetailsModal);
+                        bookingInformation = bookingDetails(info.event.id, bookingDetailsModal);
 
                         bookingDetailsModal.find('.remove-booking').attr('id',info.event.id);
                         bookingDetailsModal.find('.edit-booking').attr('id',info.event.id);
                         // change the border color just for fun
                         info.el.style.borderColor = 'red';
+                        console.log(bookingInformation);
                     },
                     dateClick: function(info) {
                         stepper.reset();
@@ -377,12 +379,14 @@
                             type: 'success',
                             title: response.message
                         });
+                        $('#add-booking-form').find('.add-booking-btn').attr('disabled',false);
                     }
                     $('#booking-modal').find('.overlay').remove();
                 },error: function(xhr, status, error){
                     errorDisplay(xhr.responseJSON.errors);
                     if(xhr.responseJSON.success === false && xhr.responseJSON.date === false)
                     {
+                        $('#add-booking-form').find('.add-booking-btn').attr('disabled',true);
                         Toast.fire({
                             type: 'warning',
                             title: xhr.responseJSON.message
@@ -472,7 +476,14 @@
                 $.ajax({
                     url : '/bookings/'+bookingId,
                     type: 'DELETE',
-                    data: {'reason' : reason},
+                    data: {
+                        'reason' : reason,
+                        'staycation_id' : {{$assignedStaycation->id}},
+                        'model' : 'bookings',
+                        'user_full_name' : '{{auth()->user()->full_name}}',
+                        'username' : '{{auth()->user()->username}}',
+                        bookingInformation
+                    },
                     headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     beforeSend: function(){
 

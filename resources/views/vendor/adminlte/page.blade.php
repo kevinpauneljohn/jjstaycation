@@ -34,9 +34,9 @@
         @endempty
 
         {{-- Footer --}}
-        @hasSection('footer')
-            @include('adminlte::partials.footer.footer')
-        @endif
+{{--        @hasSection('footer')--}}
+{{--            @include('adminlte::partials.footer.footer')--}}
+{{--        @endif--}}
 
         {{-- Right Control Sidebar --}}
         @if(config('adminlte.right_sidebar'))

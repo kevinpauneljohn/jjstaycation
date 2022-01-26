@@ -85,6 +85,6 @@ Route::group(['middleware' => ['auth']], function(){
 });
 
 Route::get('/test',function(){
-    phpinfo();
+    return \Spatie\Activitylog\Models\Activity::where('properties->model','=','bookings')->get();
 });
 
