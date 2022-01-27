@@ -5,7 +5,7 @@
             ->where('properties->staycation_id','=',\Illuminate\Support\Facades\Request::segment(2))
             ->orderBy('created_at','desc')->get();
         @endphp
-    <div style="overflow-y: scroll;height: 80vh; /* For 100% screen height */">
+    <div style="overflow-y: scroll;height: 80vh; /* For 100% screen height */" id="style-3">
         @foreach($activities as $activity)
             <span class="text-muted"><i class="far fa-clock"></i> {{\Illuminate\Support\Carbon::parse($activity->created_at)->format('Y-m-d h:s a')}}</span>
             <div class="mb-4">

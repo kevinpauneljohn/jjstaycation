@@ -264,7 +264,7 @@ return [
                     'text' => 'Assigned Resorts',
                     'route'  => 'assigned-staycations.index',
                     'icon_color' => 'blue',
-                    'can' => 'view assigned staycations'
+                    'can' => 'view assigned staycation'
                 ],
             ]
         ],
