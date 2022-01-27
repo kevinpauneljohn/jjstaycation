@@ -49,7 +49,7 @@
 @section('js')
     <script src="{{asset('js/errorChecker.js')}}"></script>
     <script src="{{asset('js/errorDisplay.js')}}"></script>
-    @can('view assigned staycations')
+    @can('view assigned staycation')
         <script>
             $(function() {
                 $('#assigned-staycation-list').DataTable({

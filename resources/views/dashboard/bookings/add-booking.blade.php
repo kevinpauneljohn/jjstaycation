@@ -37,7 +37,7 @@
 
     @if(auth()->user()->can('add booking') || auth()->user()->can('edit booking'))
         <!--add new package modal-->
-        <div class="modal fade" id="booking-modal">
+        <div class="modal fade booking" id="booking-modal">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -76,6 +76,7 @@
     <script src="{{asset('/js/errorDisplay.js')}}"></script>
     <script src="{{asset('/js/errorChecker.js')}}"></script>
     <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
+    <script src="{{asset('/js/bookings/add-booking.js')}}"></script>
     <script>
         let calendar;
         let blocked_dates;
@@ -315,6 +316,7 @@
                             id: "create-booking-btn",
                             text: "Create",
                             click: function() {
+                                addBooking();
                                 stepper.reset();
                                 customBookingButton();
                                 bookingModal.modal("toggle");
@@ -334,6 +336,7 @@
                                 title: 'Please select another date'
                             });
                         }else{
+                            addBooking();
                             confirmSelectedDate(info.startStr, info.endStr);
                         }
                     },
@@ -348,7 +351,7 @@
                         bookingDetailsModal.find('.edit-booking').attr('id',info.event.id);
                         // change the border color just for fun
                         info.el.style.borderColor = 'red';
-                        console.log(bookingInformation);
+                        // console.log(bookingInformation);
                     },
                     dateClick: function(info) {
                         stepper.reset();
@@ -510,10 +513,12 @@
             removeBooking();
         });
 
-        $(document).on('click','.edit-booking',function(){
-            console.log(bookingId);
-        });
+        // $(document).on('click','.edit-booking',function(){
+        //     console.log(bookingId);
+        // });
 
     </script>
 {{--    <script src="{{asset('/js/StayCation/booking.js')}}"></script>--}}
+    @stack('booking-details')
 @stop
+

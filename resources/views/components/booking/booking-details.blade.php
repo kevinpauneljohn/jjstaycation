@@ -13,7 +13,7 @@
 
                 </div>
                 <div class="btn-group" style="width: 100%">
-                    <button type="button" class="btn btn-primary btn-flat edit-booking">Edit</button>
+                    <button type="button" class="btn btn-primary btn-flat edit-booking" data-toggle="modal" data-target="#booking-modal">Edit</button>
                     <button type="button" class="btn btn-danger btn-flat cancel-booking">Cancel Booking</button>
                     <button type="button" class="btn btn-warning btn-flat" data-dismiss="modal">Close</button>
                 </div>
@@ -23,3 +23,17 @@
         <!-- /.modal-dialog -->
     </div>
 </div>
+@push('booking-details')
+    @once
+        <script>
+            $(document).on('click','.edit-booking',function(){
+                $(this).closest('.modal').modal('toggle');
+                $('#booking-modal').find('.form-submit').attr('id','edit-booking-form');
+                // $('#booking-modal').modal('toggle');
+
+                // bookingId var located in add-booking.blade.php as a javascript global variable
+                console.log(bookingId)
+            });
+        </script>
+    @endonce
+@endpush

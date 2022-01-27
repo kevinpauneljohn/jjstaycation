@@ -101,6 +101,7 @@
                         </section>
 
                         <button type="button" class="btn btn-primary" onclick="stepper.next()">Next</button>
+                        <button type="button" class="btn btn-default float-right" data-dismiss="modal">Close</button>
                     </div>
                     <div id="customer-info" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
                         <section class="mb-4">
@@ -151,6 +152,7 @@
                         </section>
                         <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                         <button type="submit" class="btn btn-primary add-booking-btn">Save</button>
+                        <button type="button" class="btn btn-default float-right" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </form>
