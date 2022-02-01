@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Staycation;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingRequest;
+use App\Http\Requests\EditBookingRequest;
 use App\Models\Staycation\Booking;
 use App\Models\Staycation\Package;
 use App\Services\Customer\Customer;
@@ -162,9 +163,9 @@ class BookingsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EditBookingRequest $request, $id)
     {
-        //
+        return $request->all();
     }
 
     /**

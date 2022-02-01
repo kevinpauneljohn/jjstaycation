@@ -37,7 +37,7 @@
 
     @if(auth()->user()->can('add booking') || auth()->user()->can('edit booking'))
         <!--add new package modal-->
-        <div class="modal fade booking" id="booking-modal">
+        <div class="modal fade booking" id="booking-modal" style="overflow-y: scroll!important;">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -58,6 +58,24 @@
 
         <!-- booking details modal -->
         <x-booking-details-modal></x-booking-details-modal>
+
+        <div class="modal fade booking" id="edit-booking-modal" style="overflow-y: scroll!important;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Booking</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <x-edit-booking-details-form :staycation="$assignedStaycation" :status="$status" :occasion="$occasion"></x-edit-booking-details-form>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
     @endif
 @stop
 @section('plugins.Moment', true)
@@ -68,15 +86,15 @@
 @section('plugins.Stepper', true)
 @section('plugins.DeviceDetector', true)
 @section('css')
-
 @stop
 
 @section('js')
     <script src="{{asset('/js/number-formatter.js')}}"></script>
     <script src="{{asset('/js/errorDisplay.js')}}"></script>
     <script src="{{asset('/js/errorChecker.js')}}"></script>
+    <script src="{{asset('/js/errorDisplayWithParent.js')}}"></script>
     <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
-    <script src="{{asset('/js/bookings/add-booking.js')}}"></script>
+{{--    <script src="{{asset('/js/bookings/add-booking.js')}}"></script>--}}
     <script>
         let calendar;
         let blocked_dates;
@@ -102,12 +120,6 @@
             showConfirmButton: false,
             timer: 3000
         });
-
-
-        // BS-Stepper Init
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-        // });
 
         let stepper = new Stepper($('.bs-stepper')[0],{
             linear: false,
@@ -142,66 +154,11 @@
 
         function customBookingButton()
         {
-            dateStart = $('#preferred_date').data('daterangepicker').startDate;
+            dateStart = $('input[name=preferred_date]').data('daterangepicker').startDate;
 
         }
 
-        $(document).on('change','#package',function(){
-            let data = this.value;
-            $('.package-details').html('');
-            $('#total_amount, #pax').val('');
-            if(data === "custom")
-            {
-                // alert('custom');
-            }else{
-                dateStart = $('#preferred_date').data('daterangepicker').startDate;
-                $.ajax({
-                    'url' : '/package-details/'+data,
-                    'type' : 'GET',
-                    beforeSend: function(){
-                    },success: function(response){
-                        // console.log(response);
 
-                        let timeIn = moment(response.time_in,"H:mm").format("hh:mm a");
-                        let timeOut = moment(response.time_out,"H:mm").format("hh:mm a") ;
-                        let remarks = response.remarks !== null ? response.remarks : '';
-                        // let amount = parseInt(response.amount);
-                        let amount = separator(response.amount);
-
-
-                        let newDateStart = moment(dateStart.format('MM-DD-YYYY')+' '+timeIn, 'MM-DD-YYYY hh:mm a').format('MM-DD-YYYY hh:mm a');
-                        let newDateEnd = moment(dateStart.format('MM-DD-YYYY')+' '+timeOut, 'MM-DD-YYYY hh:mm a').add(parseInt(response.days) - 1,'days').format('MM-DD-YYYY hh:mm a');
-
-                        $('#preferred_date').daterangepicker({
-                            timePicker: true,
-                            timePickerIncrement: 30,
-                            startDate: newDateStart,
-                            endDate: newDateEnd,
-                            minDate: new Date(),
-                            locale: {
-                                format: 'MM/DD/YYYY hh:mm A'
-                            },
-                            isInvalidDate: function (date){
-                                return blocked_dates.reduce(function(bool, range) {
-                                    return bool || (date >= range.start && date <= range.end);
-                                }, false);
-                            }
-                        });
-
-                        $('#total_amount').val(separator(response.amount));
-                        $('#pax').val(response.pax);
-                        $('.package-details').html('<table class="table table-bordered" id="display-package-info">' +
-                            '<tr><td>Days</td><td class="text-blue">'+response.days+'</td></tr>' +
-                            '<tr><td>Amount</td><td class="text-blue">'+amount+'</td></tr>' +
-                            '<tr><td>Number Of Persons</td><td class="text-blue">'+response.pax+'</td></tr>' +
-                            '<tr><td>Time In / Out</td><td><span class="text-blue">'+timeIn+'</span> / <span class="text-blue">'+timeOut+'</span></td></tr>' +
-                            '<tr><td colspan="2">'+remarks+'</td></tr></table>');
-                    },error: function(xhr, status, error){
-                        console.log(xhr);
-                    }
-                });
-            }
-        });
 
         function confirmSelectedDate(start, end)
         {
@@ -224,7 +181,7 @@
             }).then((result) => {
                 if (result.value === true) {
 
-                    $('#preferred_date').daterangepicker({
+                    $('input[name=preferred_date]').daterangepicker({
                         timePicker: true,
                         timePickerIncrement: 30,
                         startDate: dateStart.format('MM-DD-YYYY hh:mm a'),
@@ -245,7 +202,7 @@
 
 
 
-        $('#preferred_date').daterangepicker({
+        $('input[name=preferred_date]').daterangepicker({
             timePicker: true,
             timePickerIncrement: 30,
             locale: {
@@ -260,8 +217,6 @@
                 // return ;
             }
         });
-
-        // console.log(moment().format("YYYY-MM-DD"))
 
         function blockedDates()
         {
@@ -316,9 +271,12 @@
                             id: "create-booking-btn",
                             text: "Create",
                             click: function() {
-                                addBooking();
+                                // addBooking();
                                 stepper.reset();
                                 customBookingButton();
+                                bookingForm.find('.text-danger').remove();
+                                bookingForm.find('#package, #status, #occasion').val('').change();
+
                                 bookingModal.modal("toggle");
                             }
                         }
@@ -336,7 +294,7 @@
                                 title: 'Please select another date'
                             });
                         }else{
-                            addBooking();
+                            // addBooking();
                             confirmSelectedDate(info.startStr, info.endStr);
                         }
                     },
@@ -362,7 +320,9 @@
             calendar.render();
         }
 
-        $(document).on('change','#add-booking-form #preferred_date',function(){
+        $(document).on('change','input[name=preferred_date]',function(){
+            let parent_modal = $(this).closest('.modal').attr('id');
+            let parent_form = $(this).closest('form').attr('id');
             $.ajax({
                 url: '/bookings/availability',
                 type: 'POST',
@@ -372,7 +332,7 @@
                     'staycation_id' : {{$assignedStaycation->id}}
                 },
                 beforeSend: function(){
-                    $('#booking-modal').find('.modal-content').prepend('<div class="overlay">\n' +
+                    $('#'+parent_modal).find('.modal-content').prepend('<div class="overlay">\n' +
                         '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
                         '            </div>');
                 },success: function(response){
@@ -382,20 +342,20 @@
                             type: 'success',
                             title: response.message
                         });
-                        $('#add-booking-form').find('.add-booking-btn').attr('disabled',false);
+                        $('#'+parent_form).find('.save-booking-btn').attr('disabled',false);
                     }
-                    $('#booking-modal').find('.overlay').remove();
+                    $('#'+parent_modal).find('.overlay').remove();
                 },error: function(xhr, status, error){
-                    errorDisplay(xhr.responseJSON.errors);
+                    errorDisplayWithParent(parent_form, xhr.responseJSON.errors);
                     if(xhr.responseJSON.success === false && xhr.responseJSON.date === false)
                     {
-                        $('#add-booking-form').find('.add-booking-btn').attr('disabled',true);
+                        $('#'+parent_form).find('.save-booking-btn').attr('disabled',true);
                         Toast.fire({
                             type: 'warning',
                             title: xhr.responseJSON.message
                         });
                     }
-                    $('#booking-modal').find('.overlay').remove();
+                    $('#'+parent_modal).find('.overlay').remove();
                 }
             });
             clear_errors('preferred_date')
@@ -409,7 +369,7 @@
                 'data' : data,
                 beforeSend: function(){
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',true);
-                    $('#add-booking-form').find('.add-booking-btn').attr('disabled',true).val('Saving...');
+                    $('#add-booking-form').find('.save-booking-btn').attr('disabled',true).val('Saving...');
                 },success: function(response){
                     console.log(response);
                     if(response.success === true)
@@ -427,7 +387,7 @@
                         stepper.reset();
                     }
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',false);
-                    $('#add-booking-form').find('.add-booking-btn').attr('disabled',false).val('Save');
+                    $('#add-booking-form').find('.save-booking-btn').attr('disabled',false).val('Save');
                 },error: function(xhr, status, error){
                     console.log(xhr);
                     let items = xhr.responseJSON.errors;
@@ -449,7 +409,7 @@
                     }
                     errorDisplay(xhr.responseJSON.errors);
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',false);
-                    $('#add-booking-form').find('.add-booking-btn').attr('disabled',false).val('Save');
+                    $('#add-booking-form').find('.save-booking-btn').attr('disabled',false).val('Save');
                 }
             });
             clear_errors('firstname','lastname','email','mobile_number','facebook_url','preferred_date','package','total_amount','status','pax');
@@ -508,17 +468,9 @@
                 });
             }
         }
-
-        $(document).on('click','.cancel-booking',function(){
-            removeBooking();
-        });
-
-        // $(document).on('click','.edit-booking',function(){
-        //     console.log(bookingId);
-        // });
-
     </script>
-{{--    <script src="{{asset('/js/StayCation/booking.js')}}"></script>--}}
     @stack('booking-details')
+    @stack('package-details')
+    @stack('edit-booking-form')
 @stop
 

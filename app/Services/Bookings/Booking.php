@@ -23,7 +23,21 @@ class Booking
      */
     public function getBookingsWithUser($bookingsId)
     {
-        return \App\Models\Staycation\Booking::with(['user','customer'])->where('id',$bookingsId)->first();
+        $collection = collect(\App\Models\Staycation\Booking::with(['user','customer'])->where('id',$bookingsId)->first());
+
+//        $collection = collect(["one" => 1, "two" => 2, "three" => 3, "four" => 4, "five" => 5]);
+
+        $multiplied = $collection->map(function ($item, $key) {
+            if($key == "start"){
+                $item  = Carbon::parse($item)->format('Y-m-d H:i:s');
+            }
+            if($key == "end"){
+                $item  = Carbon::parse($item)->format('Y-m-d H:i:s');
+            }
+            return $item;
+        });
+
+        return $multiplied->all();
     }
 
     /**

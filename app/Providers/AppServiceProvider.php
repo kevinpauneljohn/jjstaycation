@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\View\Components\Booking\AddBooking;
 use App\View\Components\Booking\BookingDetails;
+use App\View\Components\Booking\EditBookingDetails;
 use App\View\Components\packages\package;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -30,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('add-booking-form',AddBooking::class);
         Blade::component('booking-details-modal',BookingDetails::class);
         Blade::component('package-form',package::class);
+        Blade::component('edit-booking-details-form',EditBookingDetails::class);
     }
 }

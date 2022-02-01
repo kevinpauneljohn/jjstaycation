@@ -30,7 +30,11 @@ function bookingDetails(bookingsId, element)
 function content(data)
 {
     const remarks = data.remarks !== null ? data.remarks : "";
-    return  '<strong><i class="fas fa-box-open"></i> Package Name</strong>\n' +
+    return  '<strong><i class="fas fa-thermometer-three-quarters"></i> Status</strong>\n' +
+        '\n' +
+        '                    <p class="text-muted" id="package">'+data.status+'</p>\n' +
+        '                    <hr>\n' +
+        '<strong><i class="fas fa-box-open"></i> Package Name</strong>\n' +
         '\n' +
         '                    <p class="text-muted" id="package">'+data.title+'</p>\n' +
         '                    <hr>\n' +

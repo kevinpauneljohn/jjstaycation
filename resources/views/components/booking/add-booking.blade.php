@@ -57,7 +57,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group pax">
                                         <label for="pax">Number of persons</label><span class="required">*</span>
-                                        <input type="number" name="pax" class="form-control" id="pax">
+                                        <input type="number" name="pax" class="form-control" id="pax" min="0">
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                             </div>
                         </section>
                         <button type="button" class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                        <button type="submit" class="btn btn-primary add-booking-btn">Save</button>
+                        <button type="submit" class="btn btn-primary save-booking-btn">Save</button>
                         <button type="button" class="btn btn-default float-right" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -167,3 +167,65 @@
 </div>
 
 {{--note: include booking.js is a must--}}
+
+@push('package-details')
+    <script>
+        $(document).on('change','#package',function(){
+            let parent_element = $(this).closest('form').attr('id');
+            let data = this.value;
+            $('.package-details').html('');
+            $('#total_amount, #pax').val('');
+            if(data === "custom")
+            {
+                // alert('custom');
+            }else{
+                dateStart = $('#'+parent_element+' input[name=preferred_date]').data('daterangepicker').startDate;
+                $.ajax({
+                    'url' : '/package-details/'+data,
+                    'type' : 'GET',
+                    beforeSend: function(){
+                    },success: function(response){
+                        // console.log(response);
+
+                        let timeIn = moment(response.time_in,"H:mm").format("hh:mm a");
+                        let timeOut = moment(response.time_out,"H:mm").format("hh:mm a") ;
+                        let remarks = response.remarks !== null ? response.remarks : '';
+                        // let amount = parseInt(response.amount);
+                        let amount = separator(response.amount);
+
+
+                        let newDateStart = moment(dateStart.format('MM-DD-YYYY')+' '+timeIn, 'MM-DD-YYYY hh:mm a').format('MM-DD-YYYY hh:mm a');
+                        let newDateEnd = moment(dateStart.format('MM-DD-YYYY')+' '+timeOut, 'MM-DD-YYYY hh:mm a').add(parseInt(response.days) - 1,'days').format('MM-DD-YYYY hh:mm a');
+
+                        $('input[name=preferred_date]').daterangepicker({
+                            timePicker: true,
+                            timePickerIncrement: 30,
+                            startDate: newDateStart,
+                            endDate: newDateEnd,
+                            minDate: new Date(),
+                            locale: {
+                                format: 'MM/DD/YYYY hh:mm A'
+                            },
+                            isInvalidDate: function (date){
+                                return blocked_dates.reduce(function(bool, range) {
+                                    return bool || (date >= range.start && date <= range.end);
+                                }, false);
+                            }
+                        });
+
+                        $('#total_amount').val(separator(response.amount));
+                        $('#pax').val(response.pax);
+                        $('.package-details').html('<table class="table table-bordered" id="display-package-info">' +
+                            '<tr><td>Days</td><td class="text-blue">'+response.days+'</td></tr>' +
+                            '<tr><td>Amount</td><td class="text-blue">'+amount+'</td></tr>' +
+                            '<tr><td>Number Of Persons</td><td class="text-blue">'+response.pax+'</td></tr>' +
+                            '<tr><td>Time In / Out</td><td><span class="text-blue">'+timeIn+'</span> / <span class="text-blue">'+timeOut+'</span></td></tr>' +
+                            '<tr><td colspan="2">'+remarks+'</td></tr></table>');
+                    },error: function(xhr, status, error){
+                        console.log(xhr);
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
