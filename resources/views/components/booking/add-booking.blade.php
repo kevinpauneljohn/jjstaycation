@@ -197,7 +197,7 @@
                         let newDateStart = moment(dateStart.format('MM-DD-YYYY')+' '+timeIn, 'MM-DD-YYYY hh:mm a').format('MM-DD-YYYY hh:mm a');
                         let newDateEnd = moment(dateStart.format('MM-DD-YYYY')+' '+timeOut, 'MM-DD-YYYY hh:mm a').add(parseInt(response.days) - 1,'days').format('MM-DD-YYYY hh:mm a');
 
-                        $('input[name=preferred_date]').daterangepicker({
+                        $('#'+parent_element+' input[name=preferred_date]').daterangepicker({
                             timePicker: true,
                             timePickerIncrement: 30,
                             startDate: newDateStart,
@@ -213,9 +213,9 @@
                             }
                         });
 
-                        $('#total_amount').val(separator(response.amount));
-                        $('#pax').val(response.pax);
-                        $('.package-details').html('<table class="table table-bordered" id="display-package-info">' +
+                        $('#'+parent_element+' #total_amount').val(separator(response.amount));
+                        $('#'+parent_element+' #pax').val(response.pax);
+                        $('#'+parent_element+' .package-details').html('<table class="table table-bordered" id="display-package-info">' +
                             '<tr><td>Days</td><td class="text-blue">'+response.days+'</td></tr>' +
                             '<tr><td>Amount</td><td class="text-blue">'+amount+'</td></tr>' +
                             '<tr><td>Number Of Persons</td><td class="text-blue">'+response.pax+'</td></tr>' +

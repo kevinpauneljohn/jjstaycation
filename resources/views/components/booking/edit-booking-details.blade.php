@@ -87,6 +87,7 @@
     <script>
         $(document).on('submit','#edit-booking-form',function(form){
             form.preventDefault();
+            const parent_modal = $(this).closest('.modal').attr('id');
             let data = $(this).serializeArray().concat({'name' : 'booking_id','value' : parseInt(bookingId)});;
 
             $.ajax({
@@ -95,11 +96,38 @@
                 headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: data,
                 beforeSend: function(){
-
+                    $('#'+parent_modal).find('.modal-content').prepend('<div class="overlay">\n' +
+                        '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
+                        '            </div>');
                 },success: function(response){
                     console.log(response);
+                    if(response.success === true)
+                    {
+                        Toast.fire({
+                            type: 'success',
+                            title: response.message
+                        });
+                        displayCalendar(events);
+                    }
+                    else if(response.success === false && response.changes === false)
+                    {
+                        Toast.fire({
+                            type: 'warning',
+                            title: response.message
+                        });
+                    }
+
+                    $('#'+parent_modal).find('.overlay').remove();
                 },error: function(xhr, status, error){
-                    console.log(xhr);
+                    const invalidData = xhr.responseJSON.errors;
+                    if(Object.keys(invalidData).length > 0)
+                    {
+                        Toast.fire({
+                            type: 'warning',
+                            title: 'Please fill all required fields!'
+                        });
+                    }
+                    $('#'+parent_modal).find('.overlay').remove();
                     errorDisplayWithParent('edit-booking-form',xhr.responseJSON.errors);
                 }
             });

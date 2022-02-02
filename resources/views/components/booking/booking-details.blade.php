@@ -50,21 +50,21 @@
                     }
                 });
 
-                // console.log(bookingInformation)
                 let editBookingForm = $('#edit-booking-form');
                 let packageVal = $("#package option:contains("+bookingInformation.title+")").val()
+
+                editBookingForm.find('table').remove();
 
                 editBookingForm.find('#package').val(packageVal).change();
                 editBookingForm.find('#pax').val(bookingInformation.pax);
                 editBookingForm.find('#total_amount').val(bookingInformation.total_amount);
                 editBookingForm.find('#status').val(bookingInformation.status);
                 editBookingForm.find('#remarks').val(bookingInformation.remarks);
+                editBookingForm.find('h4').after('<table class="table table-bordered"><tr>' +
+                    '<td>Guest Name</td><td>'+bookingInformation.customer.firstname+' '+bookingInformation.customer.lastname+'</td></tr>' +
+                    '<tr><td>Email</td><td><a href="mailto:'+bookingInformation.customer.email+'">'+bookingInformation.customer.email+'</a> </td></tr>' +
+                    '<tr><td>Contact Number</td><td><a href="tel:'+bookingInformation.customer.mobile_number+'">'+bookingInformation.customer.mobile_number+'</a></td></tr></table>');
             });
-
-            // $(document).on('submit','#edit-booking-form',function(form){
-            //     form.preventDefault();
-            //     let data = $(this).serializeArray().concat({'name' : 'booking_id','value' : parseInt(bookingId)});
-            // });
 
             $(document).on('click','.cancel-booking',function(){
                 removeBooking();

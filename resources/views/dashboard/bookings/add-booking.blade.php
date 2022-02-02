@@ -329,13 +329,16 @@
                 headers : {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 data: {
                     'preferred_date' : this.value,
-                    'staycation_id' : {{$assignedStaycation->id}}
+                    'staycation_id' : {{$assignedStaycation->id}},
+                    'form' : parent_form,
+                    'bookingId' : bookingId
                 },
                 beforeSend: function(){
                     $('#'+parent_modal).find('.modal-content').prepend('<div class="overlay">\n' +
                         '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
                         '            </div>');
                 },success: function(response){
+                    console.log(response);
                     if(response.success === true)
                     {
                         Toast.fire({

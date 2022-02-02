@@ -68,14 +68,21 @@ class Booking
 
     /**
      * get all overlapping dates from the selected dates
-     * @param $staycation_d
+     * @param $staycation_id
      * @param $start_date
      * @param $end_date
      * @return mixed
      */
-    public function overlapping($staycation_d, $start_date, $end_date)
+    public function overlapping($staycation_id, $start_date, $end_date)
     {
-        return \App\Models\Staycation\Booking::where('staycation_id', $staycation_d)
+        return \App\Models\Staycation\Booking::where('staycation_id', $staycation_id)
+            ->overlapping($start_date, $end_date)->get();
+    }
+
+    public function overlappingExceptBooking($staycation_id, $bookingId, $start_date, $end_date)
+    {
+        return \App\Models\Staycation\Booking::where('staycation_id', $staycation_id)
+            ->whereNotIn('id',[$bookingId])
             ->overlapping($start_date, $end_date)->get();
     }
 }

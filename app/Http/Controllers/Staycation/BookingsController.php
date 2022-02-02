@@ -112,6 +112,10 @@ class BookingsController extends Controller
 
             if($booking->create($bookingDetails))
             {
+                activity()
+                    ->causedBy(auth()->user()->id)
+                    ->withProperties(collect($bookingDetails)->merge(['model' => 'bookings'])->all())
+                    ->log('created');
                 return response()->json(['success' => true, 'message' => 'Booking successfully added!']);
             }
             return response()->json(['success' => false, 'message' => 'Booking was not saved!']);
@@ -165,7 +169,25 @@ class BookingsController extends Controller
      */
     public function update(EditBookingRequest $request, $id)
     {
-        return $request->all();
+        $date = explode("-",$request->preferred_date);
+        $start_date = Carbon::parse($date[0]);
+        $end_date = Carbon::parse($date[1]);
+
+        $booking = Booking::find($id);
+        $booking->title = Package::find($request->package)->name;
+        $booking->total_amount = $request->total_amount;
+        $booking->start = $date[0];
+        $booking->end = $date[1];
+        $booking->pax = $request->pax;
+        $booking->remarks = $request->remarks;
+        $booking->status = $request->status;
+        if($booking->isDirty())
+        {
+            $booking->save();
+            return response(['success' => true, 'message' => 'Bookings Updated!']);
+        }
+
+        return response(['success' => false, 'changes' => false,'message' => 'No changes occurred!']);
     }
 
     /**
@@ -196,11 +218,24 @@ class BookingsController extends Controller
         $date = explode("-",$request->preferred_date);
         $start_date = Carbon::parse($date[0]);
         $end_date = Carbon::parse($date[1]);
-        if(collect($booking->overlapping($request->staycation_id, $start_date, $end_date))->count() > 0)
+
+        if($request->form === 'add-booking-form')
         {
-            return response()->json(['success' => false,'date' => false, 'message' => 'Selected date overlaps from an existing bookings <br/>Please select another date',
-                'errors' => ['preferred_date' => ['Date overlaps from another bookings']],
-            ],422);
+            if(collect($booking->overlapping($request->staycation_id, $start_date, $end_date))->count() > 0)
+            {
+                return response()->json(['success' => false,'date' => false, 'message' => 'Selected date overlaps from an existing bookings <br/>Please select another date',
+                    'errors' => ['preferred_date' => ['Date overlaps from another bookings']],
+                ],422);
+
+            }
+        }else{
+            if(collect($booking->overlappingExceptBooking($request->staycation_id, $request->bookingId, $start_date, $end_date))->count() > 0)
+            {
+                return response()->json(['success' => false,'date' => false, 'message' => 'Selected date overlaps from an existing bookings <br/>Please select another date',
+                    'errors' => ['preferred_date' => ['Date overlaps from another bookings']],
+                ],422);
+
+            }
 
         }
         return response()->json(['success' => true, 'message' => 'Selected date is available!']);
