@@ -17,6 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
+            PhilippineRegionsTableSeeder::class,
+            PhilippineProvincesTableSeeder::class,
+            PhilippineCitiesTableSeeder::class,
+            PhilippineBarangaysTableSeeder::class
         ]);
     }
 }

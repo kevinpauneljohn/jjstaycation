@@ -338,7 +338,10 @@
                         '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
                         '            </div>');
                 },success: function(response){
-                    console.log(response);
+                    // console.log(response);
+                    // let packageVal = $("#package option:contains(Custom)").val()
+                    // console.log(packageVal)
+
                     if(response.success === true)
                     {
                         Toast.fire({

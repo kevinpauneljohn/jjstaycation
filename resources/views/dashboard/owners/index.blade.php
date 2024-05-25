@@ -5,7 +5,7 @@
 @section('content_header')
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Owners</h1>
+            <h1 class="m-0 text-dark">Hosts</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -28,7 +28,7 @@
                 <div class="mb-4">
                     <a href="{{route('display.all.trashed.owners')}}">View Trashed</a>
                 </div>
-                <table id="owners-list" class="table table-hover table-bordered" role="grid">
+                <table id="owners-list" class="table table-hover table-bordered" role="grid" style="width: 100% !important;">
                     <thead>
                     <tr role="row">
                         <th>First Name</th>

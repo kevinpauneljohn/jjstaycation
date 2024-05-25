@@ -15,6 +15,7 @@ class StayCation
     public function stayCations($query)
     {
         return DataTables::of($query)
+
             ->editColumn('address',function($staycation){
                 $address_number = $staycation->address->address_number;
                 $province = $staycation->address->province !== null ? PhilippineProvince::where('province_code',$staycation->address->province)->first()->province_description : "";

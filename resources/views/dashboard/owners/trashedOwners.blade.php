@@ -29,7 +29,7 @@
                 @endcan
             </div>
             <div class="card-body">
-                <table id="owners-list" class="table table-hover table-bordered" role="grid">
+                <table id="owners-list" class="table table-hover table-bordered" role="grid" style="width: 100% !important;">
                     <thead>
                     <tr role="row">
                         <th>First Name</th>
