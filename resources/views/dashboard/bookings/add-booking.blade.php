@@ -101,8 +101,9 @@
     <script>
         const { contacts } = window.WTN
 
-        alert(contacts)
+
         $(document).ready(function(){
+            alert(contacts)
             contacts.getPermissionStatus({
                 callback: function(data){
                     //data.status contains permission status
