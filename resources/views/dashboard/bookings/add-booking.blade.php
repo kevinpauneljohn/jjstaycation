@@ -103,7 +103,6 @@
 
 
         $(document).ready(function(){
-            alert(contacts)
             contacts.getPermissionStatus({
                 callback: function(data){
                     //data.status contains permission status
@@ -116,7 +115,7 @@
             contacts.getAll({
                 callback: function(data){
                     //data.contacts contains all contact
-                    $('#contacts').append('<p>'+data+'</p>')
+                    $('#contacts').text(data)
                     $.each(data, function(key, value){
                         $('#contacts').append('<p>'+key+' - '+value+'</p>')
                     })
