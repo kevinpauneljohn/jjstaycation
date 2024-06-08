@@ -529,6 +529,16 @@ return [
                 ]
             ],
         ],
+        'DeviceScript' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '/js/device-script.js',
+                ]
+            ],
+        ],
     ],
 
     /*
