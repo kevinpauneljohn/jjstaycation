@@ -5,6 +5,6 @@ WTN.enablePullToRefresh(true);
 
 WTN.statusBar({
     style:"dark",
-    color:"80ff0000",
+    color:"1a81e1",
     overlay:true //Only for android
 });
