@@ -110,7 +110,7 @@
             //     }
             // })
 
-
+            $('#contacts').append('<p>'+contacts+'</p>')
             contacts.getAll({
                 callback: function(data){
                     //data.contacts contains all contact
