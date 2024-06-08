@@ -114,7 +114,8 @@
             contacts.getAll({
                 callback: function(data){
                     //data.contacts contains all contact
-                    $.each(data.contacts, function(key, value){
+                    $('#contacts').append('<p>'+data['contacts']+'</p>')
+                    $.each(data['contacts'], function(key, value){
                         $('#contacts').append('<p>'+key+' - '+value+'</p>')
                     })
 
