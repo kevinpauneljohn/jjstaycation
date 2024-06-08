@@ -23,6 +23,12 @@ class RoleSeeder extends Seeder
         $owner = Role::create(["name" => "owner"]);
         $careTaker = Role::create(["name" => "care taker"]);
 
+        //user//
+        Permission::create(['name' => 'view user'])->syncRoles(['admin']);
+        Permission::create(['name' => 'add user'])->syncRoles(['admin']);
+        Permission::create(['name' => 'edit user'])->syncRoles(['admin']);
+        Permission::create(['name' => 'delete user'])->syncRoles(['admin']);
+        //end user//
         //permission//
         Permission::create(['name' => 'view permission']);
         Permission::create(['name' => 'add permission']);
