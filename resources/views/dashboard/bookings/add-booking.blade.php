@@ -105,7 +105,7 @@
             contacts.getPermissionStatus({
                 callback: function(data){
                     //data.status contains permission status
-                    $('#contacts').text(data.contacts)
+                    $('#contacts').text(data.phoneNumbers)
                 }
             })
 
