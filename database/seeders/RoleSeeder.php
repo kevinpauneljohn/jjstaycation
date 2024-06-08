@@ -36,32 +36,32 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'delete role']);
         //end role//
         //owner//
-        Permission::create(['name' => 'view owner']);
-        Permission::create(['name' => 'add owner']);
-        Permission::create(['name' => 'edit owner']);
-        Permission::create(['name' => 'delete owner']);
-        Permission::create(['name' => 'permanent delete owner']);
-        Permission::create(['name' => 'restore owner']);
+        Permission::create(['name' => 'view owner'])->syncRoles(['admin']);
+        Permission::create(['name' => 'add owner'])->syncRoles(['admin']);
+        Permission::create(['name' => 'edit owner'])->syncRoles(['admin']);
+        Permission::create(['name' => 'delete owner'])->syncRoles(['admin']);
+        Permission::create(['name' => 'permanent delete owner'])->syncRoles(['admin']);
+        Permission::create(['name' => 'restore owner'])->syncRoles(['admin']);
         //end owner//
         //role//
-        Permission::create(['name' => 'view staycation']);
-        Permission::create(['name' => 'add staycation']);
-        Permission::create(['name' => 'edit staycation']);
-        Permission::create(['name' => 'delete staycation']);
-        Permission::create(['name' => 'permanent delete staycation']);
-        Permission::create(['name' => 'restore staycation']);
-        Permission::create(['name' => 'assign staycation'])->syncRoles(['supervisor','manager']);
-        Permission::create(['name' => 'remove assigned staycation'])->syncRoles(['supervisor','manager']);
-        Permission::create(['name' => 'view assigned staycation'])->syncRoles(['supervisor','manager','agent']);
+        Permission::create(['name' => 'view staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'add staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'edit staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'delete staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'permanent delete staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'restore staycation'])->syncRoles(['admin']);
+        Permission::create(['name' => 'assign staycation'])->syncRoles(['supervisor','manager','admin']);
+        Permission::create(['name' => 'remove assigned staycation'])->syncRoles(['supervisor','manager','admin']);
+        Permission::create(['name' => 'view assigned staycation'])->syncRoles(['supervisor','manager','agent','admin']);
         //end role//
 
         //staycation package//
-        Permission::create(['name' => 'view staycation package']);
-        Permission::create(['name' => 'add staycation package']);
-        Permission::create(['name' => 'edit staycation package']);
-        Permission::create(['name' => 'delete staycation package']);
-        Permission::create(['name' => 'permanent delete staycation package']);
-        Permission::create(['name' => 'restore staycation package']);
+        Permission::create(['name' => 'view staycation package'])->syncRoles(['admin']);
+        Permission::create(['name' => 'add staycation package'])->syncRoles(['admin']);
+        Permission::create(['name' => 'edit staycation package'])->syncRoles(['admin']);
+        Permission::create(['name' => 'delete staycation package'])->syncRoles(['admin']);
+        Permission::create(['name' => 'permanent delete staycation package'])->syncRoles(['admin']);
+        Permission::create(['name' => 'restore staycation package'])->syncRoles(['admin']);
         //end staycation package//
 
         //appointment//
@@ -69,8 +69,8 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'add booking'])->syncRoles(['supervisor','manager','admin','agent']);
         Permission::create(['name' => 'edit booking'])->syncRoles(['supervisor','manager','admin','agent']);
         Permission::create(['name' => 'delete booking'])->syncRoles(['supervisor','manager','admin','agent']);
-        Permission::create(['name' => 'permanent delete booking']);
-        Permission::create(['name' => 'restore booking']);
+        Permission::create(['name' => 'permanent delete booking'])->syncRoles(['admin']);
+        Permission::create(['name' => 'restore booking'])->syncRoles(['admin']);
         //end appointment//
 
         //customer//
@@ -78,8 +78,8 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'add customer'])->syncRoles(['supervisor','manager','admin','agent','owner']);
         Permission::create(['name' => 'edit customer'])->syncRoles(['supervisor','manager','admin','agent','owner']);
         Permission::create(['name' => 'delete customer'])->syncRoles(['supervisor','manager','admin','agent','owner']);
-        Permission::create(['name' => 'permanent delete customer']);
-        Permission::create(['name' => 'restore customer']);
+        Permission::create(['name' => 'permanent delete customer'])->syncRoles(['admin']);
+        Permission::create(['name' => 'restore customer'])->syncRoles(['admin']);
         //end customer//
     }
 }
