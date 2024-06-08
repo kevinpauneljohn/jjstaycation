@@ -280,11 +280,11 @@ return [
             'route' => 'customers.index',
             'can' => 'view customer'
         ],
-        [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+//        [
+//            'text' => 'change_password',
+//            'url'  => 'admin/settings',
+//            'icon' => 'fas fa-fw fa-lock',
+//        ],
         [
             'text'       => 'Settings',
             'submenu'        => [
