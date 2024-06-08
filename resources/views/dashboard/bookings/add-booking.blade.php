@@ -105,8 +105,10 @@
             contacts.getPermissionStatus({
                 callback: function(data){
                     //data.status contains permission status
-                    alert('test')
-                    $('#contacts').text(data)
+                    $.each(data, function(key, value){
+                        $('#contacts').append('<p>'+key+'</p>')
+                    });
+
                 }
             })
 
