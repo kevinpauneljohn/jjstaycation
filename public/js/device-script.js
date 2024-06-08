@@ -9,4 +9,3 @@ WTN.statusBar({
     overlay:true //Only for android
 });
 
-WTN.clearAppCache(true);
