@@ -106,7 +106,7 @@
                 callback: function(data){
                     //data.status contains permission status
                     $.each(data, function(key, value){
-                        $('#contacts').append('<p>'+key+'</p>')
+                        $('#contacts').append('<p>'+key+' - '+value+'</p>')
                     });
 
                 }
