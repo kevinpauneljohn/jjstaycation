@@ -5,10 +5,51 @@ namespace App\Services\Customer;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 use Yajra\DataTables\Facades\DataTables;
 
 class Customer
 {
+    public function __construct()
+    {
+        $this->viewCustomerPermission()
+            ->addCustomerPermission()
+            ->editCustomerPermission()
+            ->deleteCustomerPermission();
+    }
+    private function viewCustomerPermission()
+    {
+        if(Permission::where('name','view customer')->count() === 0)
+        {
+            Permission::create(['name' => 'view customer'])->assignRole('admin','supervisor','manager','agent','owner','care taker');
+        }
+        return $this;
+    }
+
+    private function addCustomerPermission()
+    {
+        if(Permission::where('name','add customer')->count() === 0)
+        {
+            Permission::create(['name' => 'add customer'])->assignRole('admin','supervisor','manager','agent','owner');
+        }
+        return $this;
+    }
+    private function editCustomerPermission()
+    {
+        if(Permission::where('name','edit customer')->count() === 0)
+        {
+            Permission::create(['name' => 'edit customer'])->assignRole('admin','supervisor','manager','agent','owner');
+        }
+        return $this;
+    }
+
+    private function deleteCustomerPermission()
+    {
+        if(Permission::where('name','delete customer')->count() === 0)
+        {
+            Permission::create(['name' => 'delete customer'])->assignRole('admin','supervisor','manager','owner');
+        }
+    }
     /**
      * create new customer or update the existing
      * @param \App\Models\Staycation\Customer $customer
@@ -17,13 +58,6 @@ class Customer
      */
     public function create(\App\Models\Staycation\Customer $customer, array $data)
     {
-        $newCustomer = \App\Models\Staycation\Customer::where('email',$data['email'])->orWhere('mobile_number',$data['mobile_number']);
-        if(collect($newCustomer->first())->count() > 0)
-        {
-
-            $newCustomer->update($data);
-            return $newCustomer->first();
-        }
         return $customer::create($data);
     }
 
@@ -73,5 +107,21 @@ class Customer
             ->whereIn('bookings.staycation_id',$assignedStaycations)
             ->groupBy('bookings.customer_id')
             ->get();
+    }
+
+    public function getCustomer($customerId)
+    {
+        return \App\Models\Staycation\Customer::findOrFail($customerId);
+    }
+
+    public function updateCustomer($customerId, array $data): bool
+    {
+        $customer = $this->getCustomer($customerId);
+        $customer->fill($data);
+        if($customer->isDirty())
+        {
+            return (bool)$customer->save();
+        }
+        return false;
     }
 }

@@ -84,6 +84,7 @@ $(document).on('click','.edit-user-btn',function(){
         beforeSend: function(){
 
         },success: function(response){
+            console.log('kevin')
             $.each(response,function(key, value){
                 $('#'+key).val(value).change();
             });

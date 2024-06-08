@@ -202,7 +202,13 @@ class UserController extends Controller
      */
     public function all_assigned_staycation(UserDataTable $userDataTable, $userId)
     {
-        return $userDataTable->assigned_stayCations(User::findOrFail($userId)->stayCationLists);
+        if(auth()->user()->hasRole('agent'))
+        {
+            $staycations = User::findOrFail($userId)->stayCationLists;
+        }else{
+            $staycations = Staycation::all();
+        }
+        return $userDataTable->assigned_stayCations($staycations);
     }
 
     /**

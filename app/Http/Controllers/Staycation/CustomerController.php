@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Staycation;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Staycation\Staycation;
 use App\Services\Customer\Customer;
 use Carbon\Carbon;
@@ -63,21 +64,17 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Customer $customer)
     {
-        //
+        return $customer->getCustomer($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(UpdateCustomerRequest $request, $id, Customer $customer): \Illuminate\Http\JsonResponse
     {
-        //
+        return $customer->updateCustomer($id, collect($request->all())->toArray()) ?
+            response()->json(['success' => true, 'message' => 'Customer details updated!']) :
+            response()->json(['success' => false, 'message' => 'No changes made!']) ;
     }
 
     /**

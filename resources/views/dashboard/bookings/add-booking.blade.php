@@ -299,6 +299,7 @@
                         }
                     },
                     eventClick: function(info) {
+
                         bookingDetailsModal.modal('toggle');
                         // alert('Event: ' + info.event.title);
                         bookingId = info.event.id;

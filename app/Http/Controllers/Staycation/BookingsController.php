@@ -173,13 +173,18 @@ class BookingsController extends Controller
         $start_date = Carbon::parse($date[0]);
         $end_date = Carbon::parse($date[1]);
 
+        $package = Package::find($request->package);
+        $bookingTitle = $request->package === 'custom' ? 'Custom' : $package->name;
+        $backgroundColor = $request->package === 'custom' ? '#3788d8' : $package->color;
+
         $booking = Booking::find($id);
-        $booking->title = Package::find($request->package)->name;
+        $booking->title = $bookingTitle;
         $booking->total_amount = $request->total_amount;
         $booking->start = $date[0];
         $booking->end = $date[1];
         $booking->pax = $request->pax;
         $booking->remarks = $request->remarks;
+        $booking->backgroundColor = $backgroundColor;
         $booking->status = $request->status;
         if($booking->isDirty())
         {

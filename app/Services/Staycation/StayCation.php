@@ -31,6 +31,10 @@ class StayCation
             })
             ->addColumn('action', function($staycation){
                 $action = '';
+                if(auth()->user()->can('add booking'))
+                {
+                    $action .= '<a href="'.route('assigned-staycations.show',['assigned_staycation' => $staycation->id]).'" class="btn btn-xs btn-primary view-assigned-staycation-btn" id="'.$staycation->id.'" title="View"><i class="fa fa-calendar-alt"></i></a> ';
+                }
                 if(auth()->user()->can('view staycation'))
                 {
                     $action .= '<a href="'.route('staycations.show',['staycation' => $staycation->id]).'" class="btn btn-xs btn-success view-staycation-btn" id="'.$staycation->id.'" title="View"><i class="fa fa-eye"></i></a> ';

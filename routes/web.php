@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__ . '/web/customer.php';
+
 Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
@@ -72,10 +74,6 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('/blocked-dates/{staycation}',[\App\Http\Controllers\Staycation\BookingsController::class,'blockedDates'])->name('bookings.blocked.dates');
     //end bookings//
 
-    //customer//
-    Route::resource('customers',\App\Http\Controllers\Staycation\CustomerController::class);
-    Route::get('/all-customers',[\App\Http\Controllers\Staycation\CustomerController::class,'allCustomers'])->name('all.customers.list');
-    //end customer //
 });
 
 Route::group(['middleware' => ['auth']], function(){

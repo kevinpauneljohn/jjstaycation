@@ -88,7 +88,8 @@
         $(document).on('submit','#edit-booking-form',function(form){
             form.preventDefault();
             const parent_modal = $(this).closest('.modal').attr('id');
-            let data = $(this).serializeArray().concat({'name' : 'booking_id','value' : parseInt(bookingId)});;
+            let data = $(this).serializeArray().concat({'name' : 'booking_id','value' : parseInt(bookingId)});
+            console.log(data)
 
             $.ajax({
                 url : '/bookings/'+bookingId,
@@ -100,7 +101,7 @@
                         '                <i class="fas fa-2x fa-sync fa-spin"></i>\n' +
                         '            </div>');
                 },success: function(response){
-                    console.log(response);
+                    // console.log(response);
                     if(response.success === true)
                     {
                         Toast.fire({
