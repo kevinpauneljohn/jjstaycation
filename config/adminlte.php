@@ -535,6 +535,11 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
+                    'location' => 'https://unpkg.com/webtonative@1.0.53/webtonative.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
                     'location' => '/js/device-script.js',
                 ]
             ],

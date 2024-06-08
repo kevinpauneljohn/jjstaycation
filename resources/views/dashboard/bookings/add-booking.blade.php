@@ -378,7 +378,7 @@
                     $('#add-booking-form').find('input, select, textarea').attr('disabled',true);
                     $('#add-booking-form').find('.save-booking-btn').attr('disabled',true).val('Saving...');
                 },success: function(response){
-                    console.log(response);
+                    // console.log(response);
                     if(response.success === true)
                     {
                         $('#add-booking-form').trigger('reset');
