@@ -57,7 +57,7 @@ class Booking
                 return ucwords($booking->customer_full_name);
             })
             ->editColumn('booked_by',function($booking){
-                return ucwords($booking->user->full_name);
+                return ucwords(strtolower($booking->user->full_name));
             })
             ->editColumn('total_amount',function($booking){
                 return '<span class="text-purple text-bold">'.number_format($booking->total_amount,2).'</span>';
