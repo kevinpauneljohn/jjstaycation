@@ -102,21 +102,21 @@
         const { contacts } = window.WTN
 
         $(document).ready(function(){
-            contacts.getPermissionStatus({
-                callback: function(data){
-                    //data.status contains permission status
-                    $.each(data, function(key, value){
-                        $('#contacts').append('<p>'+key+' - '+value+'</p>')
-                    });
-
-                }
-            })
+            // contacts.getPermissionStatus({
+            //     callback: function(data){
+            //         //data.status contains permission status
+            //
+            //
+            //     }
+            // })
 
 
             contacts.getAll({
                 callback: function(data){
                     //data.contacts contains all contact
-                    $('#contacts').text(data)
+                    $.each(data, function(key, value){
+                        $('#contacts').append('<p>'+key+' - '+value+'</p>')
+                    });
                     // alert(data)
                 }
             })
