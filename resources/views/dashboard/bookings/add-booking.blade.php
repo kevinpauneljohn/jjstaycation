@@ -101,6 +101,7 @@
     <script>
         const { contacts } = window.WTN
 
+        alert(contacts)
         $(document).ready(function(){
             contacts.getPermissionStatus({
                 callback: function(data){
@@ -118,8 +119,6 @@
                     $.each(data, function(key, value){
                         $('#contacts').append('<p>'+key+' - '+value+'</p>')
                     })
-
-                    // alert(data)
                 }
             })
         })
