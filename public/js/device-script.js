@@ -8,3 +8,5 @@ WTN.statusBar({
     color:"1a81e1",
     overlay:true //Only for android
 });
+
+WTN.clearAppCache(true);
