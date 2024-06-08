@@ -10,18 +10,4 @@ WTN.statusBar({
 });
 
 
-const { contacts } = window.WTN
 
-contacts.getPermissionStatus({
-    callback: function(data){
-        //data.status contains permission status
-    }
-})
-
-
-contacts.getAll({
-    callback: function(data){
-        //data.contacts contains all contact
-        alert(data);
-    }
-})

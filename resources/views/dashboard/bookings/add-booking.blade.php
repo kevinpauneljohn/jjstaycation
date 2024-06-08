@@ -29,6 +29,9 @@
             </div>
             <div class="card-body">
 {{--                {!! $calendar->calendar() !!}--}}
+                <p id="contacts">
+
+                </p>
                 <div id="calendar"></div>
 
             </div>
@@ -96,6 +99,24 @@
     <script src="{{asset('/js/bookings/bookingDetails.js')}}"></script>
 {{--    <script src="{{asset('/js/bookings/add-booking.js')}}"></script>--}}
     <script>
+        const { contacts } = window.WTN
+
+        $(document).ready(function(){
+            contacts.getPermissionStatus({
+                callback: function(data){
+                    //data.status contains permission status
+                }
+            })
+
+
+            contacts.getAll({
+                callback: function(data){
+                    //data.contacts contains all contact
+                    $('#contacts').text(data.contacts)
+                }
+            })
+        })
+
         let calendar;
         let blocked_dates;
         let events = {
