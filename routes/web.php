@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 require __DIR__ . '/web/customer.php';
+require __DIR__ . '/web/bookings.php';
 
 Route::get('/', function () {
     return redirect(\route('dashboard'));
@@ -66,13 +67,6 @@ Route::group(['middleware' => ['auth']], function (){
     Route::delete('/remove-assigned-staycations/{staycation}/{user}',[\App\Http\Controllers\Users\UserController::class,'remove_assigned_staycation'])->name('remove.assigned.user.staycations');
     Route::get('/package-details/{package}',[\App\Http\Controllers\Staycation\PackageController::class,'getPackageById'])->name('get.package.by.id');
     //end packages//
-
-    //bookings//
-    Route::resource('bookings',\App\Http\Controllers\Staycation\BookingsController::class);
-    Route::post('/bookings/availability',[\App\Http\Controllers\Staycation\BookingsController::class,'checkAvailability'])->name('bookings.date.availability');
-    Route::get('/booking-details/{booking}',[\App\Http\Controllers\Staycation\BookingsController::class,'getBookings'])->name('bookings.details');
-    Route::get('/blocked-dates/{staycation}',[\App\Http\Controllers\Staycation\BookingsController::class,'blockedDates'])->name('bookings.blocked.dates');
-    //end bookings//
 
 });
 

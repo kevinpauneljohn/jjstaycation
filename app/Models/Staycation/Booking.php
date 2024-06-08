@@ -28,6 +28,7 @@ class Booking extends Model
         'cancelled_by'
     ];
 
+
     protected static function booted(){
         static::saving(function($booking){
             $booking->booked_by = auth()->user()->id;

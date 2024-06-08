@@ -26,7 +26,7 @@ class BookingsController extends Controller
      */
     public function index()
     {
-        //
+        return view('bookings.index');
     }
 
     /**
@@ -263,5 +263,18 @@ class BookingsController extends Controller
     public function getBookings(\App\Services\Bookings\Booking $booking, $bookingsId)
     {
         return $booking->getBookingsWithUser($bookingsId);
+    }
+
+    public function getBookingsLists(\App\Services\Bookings\Booking $booking)
+    {
+        $user = auth()->user();
+        if($user->hasRole('agent'))
+        {
+            $assigned_staycations = collect($user->stayCationLists)->pluck('id')->toArray();
+            $bookings = Booking::whereIn('staycation_id',$assigned_staycations)->get();
+        }else{
+            $bookings = Booking::all();
+        }
+        return $booking->lists($bookings);
     }
 }

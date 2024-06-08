@@ -250,10 +250,16 @@ return [
             'can'  => 'view user',
         ],
         [
-            'text' => 'Host Management',
+            'text' => 'Hosts',
             'icon' => 'fas fa-fw fa-user-tie',
             'route' => 'owners.index',
             'can' => 'view owner'
+        ],
+        [
+            'text' => 'Bookings',
+            'icon' => 'fas fa-fw fa-calendar',
+            'route' => 'bookings.index',
+            'can' => 'view booking'
         ],
         [
             'text' => 'Resort Management',

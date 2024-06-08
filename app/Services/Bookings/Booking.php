@@ -3,6 +3,7 @@
 namespace App\Services\Bookings;
 
 use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class Booking
 {
@@ -38,6 +39,44 @@ class Booking
         });
 
         return $multiplied->all();
+    }
+
+    public function lists($bookings)
+    {
+        return DataTables::of($bookings)
+            ->editColumn('start',function($booking){
+                return $booking->start->format('m-d-Y g:i a');
+            })
+            ->editColumn('end',function($booking){
+                return $booking->end->format('m-d-Y g:i a');
+            })
+            ->editColumn('staycation_id',function($booking){
+                return '<span class="text-primary">'.ucwords($booking->staycation->name).'</span>';
+            })
+            ->editColumn('customer_id',function($booking){
+                return ucwords($booking->customer_full_name);
+            })
+            ->editColumn('booked_by',function($booking){
+                return ucwords($booking->user->full_name);
+            })
+            ->editColumn('total_amount',function($booking){
+                return '<span class="text-purple text-bold">'.number_format($booking->total_amount,2).'</span>';
+            })
+            ->addColumn('pax',function($booking){
+                return $booking->pax;
+            })
+            ->addColumn('occasion',function($booking){
+                return ucwords($booking->occasion);
+            })
+            ->editColumn('status',function($booking){
+                return $booking->status === 'reserved' ? '<span class="badge badge-success">Reserved</span>'
+                    : '<span class="badge bg-gray">Pencil Booked</span>';
+            })
+            ->addColumn('action',function($booking){
+                return '<a href="'.route('assigned-staycations.show',['assigned_staycation' => $booking->staycation_id]).'" class="btn btn-primary"><i class="fa fa-calendar-alt"></i></a>';
+            })
+            ->rawColumns(['action','status','staycation_id','total_amount'])
+            ->make(true);
     }
 
     /**
