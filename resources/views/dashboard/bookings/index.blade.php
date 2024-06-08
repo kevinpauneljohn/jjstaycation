@@ -24,7 +24,7 @@
                 header
             </div>
             <div class="card-body">
-                {!! $calendar->calendar() !!}
+{{--                {!! $calendar->calendar() !!}--}}
             </div>
         </div>
     </div>
@@ -40,5 +40,5 @@
 @stop
 
 @section('js')
-    {!! $calendar->script() !!}
+{{--    {!! $calendar->script() !!}--}}
 @stop
